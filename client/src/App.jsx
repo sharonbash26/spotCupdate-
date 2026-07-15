@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Sidebar } from "./components/Sidebar";
 import { PlayerBar } from "./components/PlayerBar";
 import { Home } from "./pages/Home";
 import { Favorites } from "./pages/Favorites";
+import { Login } from "./pages/Login";
+import { Register } from "./pages/Register";
 import { useAudioPlayer } from "./hooks/useAudioPlayer";
 import "./App.css";
 
@@ -23,50 +27,61 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="app">
-        <header className="app__mobile-header">
-          <button
-            type="button"
-            className="app__menu-btn"
-            onClick={() => setSidebarOpen(true)}
-            aria-label="Open navigation menu"
-          >
-            ☰
-          </button>
-          <span>Spotify Clone</span>
-        </header>
+      <AuthProvider>
+        <div className="app">
+          <header className="app__mobile-header">
+            <button
+              type="button"
+              className="app__menu-btn"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open navigation menu"
+            >
+              ☰
+            </button>
+            <span>Spotify Clone</span>
+          </header>
 
-        <div className="app__body">
-          <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-          <main className="app__main">
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <Home
-                    songs={songs}
-                    currentSong={player.currentSong}
-                    isPlaying={player.isPlaying}
-                    onPlay={player.playSongAt}
-                  />
-                }
-              />
-              <Route path="/favorites" element={<Favorites />} />
-            </Routes>
-          </main>
+          <div className="app__body">
+            <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+            <main className="app__main">
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <Home
+                      songs={songs}
+                      currentSong={player.currentSong}
+                      isPlaying={player.isPlaying}
+                      onPlay={player.playSongAt}
+                    />
+                  }
+                />
+                <Route
+                  path="/favorites"
+                  element={
+                    <ProtectedRoute>
+                      <Favorites />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+              </Routes>
+            </main>
+          </div>
+
+          <PlayerBar
+            song={player.currentSong}
+            isPlaying={player.isPlaying}
+            progress={player.progress}
+            duration={player.duration}
+            onTogglePlay={player.togglePlay}
+            onNext={player.next}
+            onPrev={player.prev}
+            onSeek={player.seek}
+          />
         </div>
-
-        <PlayerBar
-          song={player.currentSong}
-          isPlaying={player.isPlaying}
-          progress={player.progress}
-          duration={player.duration}
-          onTogglePlay={player.togglePlay}
-          onNext={player.next}
-          onPrev={player.prev}
-          onSeek={player.seek}
-        />
-      </div>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
