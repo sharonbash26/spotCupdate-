@@ -33,7 +33,9 @@ export function useAudioPlayer(songs) {
       if (index < 0 || index >= songs.length) return;
       const audio = audioRef.current;
       audio.src = `${API_URL}/audio/${songs[index].file}`;
-      audio.play();
+      audio.play().catch(() => {
+        // Ignore AbortError from rapid song switching — a newer play() call already took over.
+      });
       setCurrentIndex(index);
       setIsPlaying(true);
     },
@@ -50,7 +52,7 @@ export function useAudioPlayer(songs) {
       audio.pause();
       setIsPlaying(false);
     } else {
-      audio.play();
+      audio.play().catch(() => {});
       setIsPlaying(true);
     }
   }, [currentIndex, isPlaying, songs, playSongAt]);

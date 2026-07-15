@@ -1,6 +1,8 @@
 import "./SongList.css";
 
-export function SongList({ songs, currentSong, isPlaying, onPlay }) {
+export function SongList({ songs, currentSong, isPlaying, onPlay, isFavorite, onToggleFavorite }) {
+  const showFavorites = Boolean(onToggleFavorite);
+
   return (
     <table className="song-list">
       <thead>
@@ -8,11 +10,13 @@ export function SongList({ songs, currentSong, isPlaying, onPlay }) {
           <th scope="col" className="song-list__num">#</th>
           <th scope="col">Title</th>
           <th scope="col">Album</th>
+          {showFavorites && <th scope="col" className="song-list__fav-col">Favorite</th>}
         </tr>
       </thead>
       <tbody>
         {songs.map((song, index) => {
           const isCurrent = currentSong?.id === song.id;
+          const favorite = isFavorite?.(song.id);
           return (
             <tr
               key={song.id}
@@ -36,6 +40,22 @@ export function SongList({ songs, currentSong, isPlaying, onPlay }) {
                 </div>
               </td>
               <td className="song-list__album">{song.album}</td>
+              {showFavorites && (
+                <td className="song-list__fav-col">
+                  <button
+                    type="button"
+                    className={`song-list__fav-btn ${favorite ? "song-list__fav-btn--active" : ""}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onToggleFavorite(song.id);
+                    }}
+                    aria-label={favorite ? `Remove ${song.title} from favorites` : `Add ${song.title} to favorites`}
+                    aria-pressed={favorite}
+                  >
+                    {favorite ? "♥" : "♡"}
+                  </button>
+                </td>
+              )}
             </tr>
           );
         })}
