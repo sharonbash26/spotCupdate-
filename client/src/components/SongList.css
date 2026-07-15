@@ -1,0 +1,69 @@
+.song-list {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.song-list thead th {
+  color: var(--text-muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 0 16px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.song-list__num {
+  width: 48px;
+  text-align: center;
+}
+
+.song-list__row {
+  cursor: pointer;
+}
+
+.song-list__row td {
+  padding: 8px 16px;
+  color: var(--text-secondary);
+}
+
+.song-list__row:hover {
+  background: var(--bg-card-hover);
+}
+
+.song-list__row--active td {
+  color: var(--accent);
+}
+
+.song-list__title-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.song-list__cover {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.song-list__title {
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.song-list__row--active .song-list__title {
+  color: var(--accent);
+}
+
+.song-list__artist {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+@media (max-width: 600px) {
+  .song-list__album {
+    display: none;
+  }
+}
