@@ -22,6 +22,16 @@ export function SongList({ songs, currentSong, isPlaying, onPlay, isFavorite, on
               key={song.id}
               className={`song-list__row ${isCurrent ? "song-list__row--active" : ""}`}
               onClick={() => onPlay(index)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onPlay(index);
+                }
+              }}
+              tabIndex={0}
+              role="button"
+              aria-label={`Play ${song.title} by ${song.artist}`}
+              aria-current={isCurrent ? "true" : undefined}
             >
               <td className="song-list__num">
                 {isCurrent && isPlaying ? "▶" : index + 1}

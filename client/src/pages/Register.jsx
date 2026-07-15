@@ -39,7 +39,7 @@ export function Register() {
         </div>
         <div className="auth__field">
           <label htmlFor="password">Password</label>
-          <input id="password" type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" />
+          <input id="password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="new-password" />
         </div>
         <button type="submit" className="auth__submit" disabled={submitting}>
           {submitting ? "Creating account..." : "Sign up"}
